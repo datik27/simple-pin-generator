@@ -7,3 +7,144 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
     <link rel="stylesheet" href="style.css">
 </head>
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="pin-generator half-width">
+                    <input id="generatePin" class="form-control" type="text">
+                    <button id="pinGeneratorButton" class="generate-btn">Generate Pin</button>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="input-section half-width">
+                    <input id="buttonShowInScreen" class="form-control" type="text">
+                    <div id="numbers" class="numbers">
+                        <div class="calc-body">
+                            <div class="calc-button-row">
+                              <div onclick="buttonShowInScreen.value += 7" class="button">7</div>
+                              <div onclick="buttonShowInScreen.value += 8" class="button">8</div>
+                              <div onclick="buttonShowInScreen.value += 9" class="button">9</div>
+                            </div>
+                            <div class="calc-button-row">
+                              <div onclick="buttonShowInScreen.value += 4" class="button">4</div>
+                              <div onclick="buttonShowInScreen.value += 5" class="button">5</div>
+                              <div onclick="buttonShowInScreen.value += 6" class="button">6</div>
+                            </div>
+                            <div class="calc-button-row">
+                              <div onclick="buttonShowInScreen.value += 1" class="button">1</div>
+                              <div onclick="buttonShowInScreen.value += 2" class="button">2</div>
+                              <div onclick="buttonShowInScreen.value += 3" class="button">3</div>
+                            </div>
+                            <div class="calc-button-row">
+                                <div id="removeButton" class="button"><</div>
+                                <div onclick="buttonShowInScreen.value += 0" class="button">0</div>
+                                <div id="clearButton" class="button">C</div>
+                            </div>
+                            <div>
+                                <button id="pinSubmitButton" type="submit" class="submit-btn">Submit</button>
+                                <p class="action-left"><span id="countSubmit">3</span> try left</p>
+                            </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="notify" class="notify-section">
+            <p id="successful" class="notify">❌ Pin Didn't Match, Please try again</p>
+            <p id="unSuccessful" class="notify">✅ Pin Matched... Secret door is opening for you</p>
+        </div>
+    </div>
+
+     <!--custom  javascript section start-->
+
+    <script>
+    //calculator button working section start
+    var buttonShowInScreen = document.getElementById("buttonShowInScreen");
+    buttonShowInScreen.addEventListener("click",function(){
+    buttonShowInScreen.value = "";
+     })
+    //calculator button working section finish
+     
+
+    //notify item by default hide section start
+    var unSuccessful = document.getElementById("unSuccessful");
+    unSuccessful.style.display = "none";
+    var successful = document.getElementById("successful");
+    successful.style.display = "none";
+    //notify item by default hide section start
+
+     // Random pin generate working section start
+     var pinGeneratorButton = document.getElementById("pinGeneratorButton");
+     var generatePin = document.getElementById("generatePin");
+
+     pinGeneratorButton.addEventListener("click", function(){
+       var randomRange = []
+      for(var i=1000; i<9999; i++){
+      randomRange.push(i);
+     }
+     var random = Math.ceil(Math.random()*8999);
+     generatePin.value = randomRange[random];
+
+   
+     buttonShowInScreen.value=""
+     pinSubmitButton.disabled=false;
+     countSubmit.innerText=3;
+   })
+   // Random pin generate working section finish
+
+   // remove Button working section start
+    var removeButton = document.getElementById("removeButton");
+    removeButton.addEventListener("click", function(){
+
+     buttonShowInScreen.value = buttonShowInScreen.value.slice(0,-1);
+       if(buttonShowInScreen.value.length<4){
+    }
+   })
+   // remove Button working section finish
+
+   // clear Button working section start
+    var clearButton = document.getElementById("clearButton");
+    clearButton.addEventListener("click",function(){
+    buttonShowInScreen.value="";
+    })
+   // clear Button working section finish
+
+   // pin submit working section start
+     var buttonShowInScreen = document.getElementById("buttonShowInScreen");
+     var pinSubmitButton = document.getElementById("pinSubmitButton");
+
+     pinSubmitButton.addEventListener("click", function(){
+       if(buttonShowInScreen.value.length==4){
+            if(buttonShowInScreen.value==generatePin.value){
+             unSuccessful.style.display = "block";
+             successful.style.display = "none";
+            }else{
+                successful.style.display = "block";
+                unSuccessful.style.display = "none";
+           }
+       }
+       else{
+          buttonShowInScreen.value="input 4 digit number"
+          buttonShowInScreen.style.color = "white";
+          buttonShowInScreen.style.fontSize="20px"
+        }
+
+     var countSubmit = document.getElementById("countSubmit");
+     var decrease = parseInt(countSubmit.innerText)-1
+        countSubmit.innerText = decrease;
+         if(countSubmit.innerText==0){
+             if(generatePin.value == buttonShowInScreen.value){
+            countSubmit.innerText=3;
+          }
+          else{
+            pinSubmitButton.disabled=true;
+            pinSubmitButton.style.backgroundColor="grey";
+            pinSubmitButton.style.color="white";
+          }
+      }
+    })
+    // pin submit working section start
+    </script>
+    <!--custom javascript section finish-->
+</body>
+</html>
